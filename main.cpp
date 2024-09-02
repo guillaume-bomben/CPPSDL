@@ -2,10 +2,65 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
 #include <vector>
+#include <iostream>
+#include <cmath>
+
+static std::vector<SDL_Surface*> const surfaces {
+    IMG_Load("2 Tile.png"),
+    IMG_Load("4 Tile.png"),
+    IMG_Load("8 Tile.png"),
+    IMG_Load("16 Tile.png"),
+    IMG_Load("32 Tile.png"),
+    IMG_Load("64 Tile.png"),
+    IMG_Load("128 Tile.png"),
+    IMG_Load("256 Tile.png"),
+    IMG_Load("512 Tile.png"),
+    IMG_Load("1024 Tile.png"),
+    IMG_Load("2048 Tile.png"),
+};
+
+static SDL_Surface* getSurface(int num){
+    for (size_t i = 0; i < surfaces.size(); i++)
+    {
+        if(pow(2, i+1) == num){
+            return surfaces[i];
+        }
+    }
+    return NULL;
+}
+
+class Tile
+{
+private:
+    SDL_Texture* tex;
+public:
+    Tile(SDL_Renderer* rend);
+    ~Tile();
+    SDL_Texture* getTexture();
+};
+
+Tile::Tile(SDL_Renderer* rend)
+{
+    if (rand()%10 < 8){
+        tex = SDL_CreateTextureFromSurface(rend, getSurface(2));
+    }
+    else{
+        tex = SDL_CreateTextureFromSurface(rend, getSurface(4));
+    }
+}
+
+Tile::~Tile()
+{
+}
+
+SDL_Texture* Tile::getTexture(){
+    return tex;
+}
+
  
 int main(int argc, char *argv[])
 {
-    SDL_Window* win = SDL_CreateWindow("GAME", // creates a window
+    SDL_Window* win = SDL_CreateWindow("2048", // creates a window
                                        SDL_WINDOWPOS_CENTERED,
                                        SDL_WINDOWPOS_CENTERED,
                                        500, 500, 0);
@@ -18,16 +73,9 @@ int main(int argc, char *argv[])
     SDL_Renderer* rend = SDL_CreateRenderer(win, -1, render_flags);
  
     // creates a surface to load an image into the main memory
-    SDL_Surface* surface;
- 
-    // please provide a path for your image
-    surface = IMG_Load("2 Tile.png");
- 
-    // loads image to our graphics hardware memory.
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
- 
-    // clears main-memory
-    SDL_FreeSurface(surface);
+    Tile t = Tile(rend);
+
+    Tile* matrix[4][4];
  
     // let us control our image position
     // so that we can move it with our keyboard.
@@ -35,16 +83,18 @@ int main(int argc, char *argv[])
 
     // List of Rect to move all rects at once later
     std::vector<SDL_Rect> rects;
-    rects.push_back(dest);
+    rects.insert(rects.end(), dest);
  
     // connects our texture with dest to control position
-    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    SDL_QueryTexture(t.getTexture(), NULL, NULL, &rects[0].w, &rects[0].h);
  
     // sets initial x-position of object
-    dest.x = 0;
+    rects[0].x = 0;
  
     // sets initial y-position of object
-    dest.y = 0;
+    rects[0].y = 0;
+
+    matrix[0][0] = &t;
  
     // controls animation loop
     int close = 0;
@@ -70,45 +120,68 @@ int main(int argc, char *argv[])
                 switch (event.key.keysym.scancode) {
                 case SDL_SCANCODE_W:
                 case SDL_SCANCODE_UP:
-                    dest.y -= 125;
+                    std::cout << rects[0].y << std::endl;
+                    for (size_t i = 0; i < rects.size(); i++)
+                    {
+                        rects[i].y -= 125;
+                        if (rects[i].y < 0)
+                            rects[i].y = 0;
+                    }
                     break;
                 case SDL_SCANCODE_A:
                 case SDL_SCANCODE_LEFT:
-                    dest.x -= 125;
+                    std::cout << rects[0].x << std::endl;
+                    for (size_t i = 0; i < rects.size(); i++)
+                    {
+                        rects[i].x -= 125;
+                        if (rects[i].x < 0)
+                            rects[i].x = 0;
+                    }
                     break;
                 case SDL_SCANCODE_S:
                 case SDL_SCANCODE_DOWN:
+                    std::cout << rects[0].y << std::endl;
+                    for (size_t i = 0; i < rects.size(); i++)
+                    {
+                        rects[i].y += 125;
+                        if (rects[i].y + rects[i].h > 500)
+                            rects[i].y = 500 - rects[i].h;
+                    }
                     dest.y += 125;
                     break;
                 case SDL_SCANCODE_D:
                 case SDL_SCANCODE_RIGHT:
+                    std::cout << rects[0].x << std::endl;
+                    for (size_t i = 0; i < rects.size(); i++)
+                    {
+                        rects[i].x += 125;
+                        if (rects[i].x + rects[i].w > 500)
+                            rects[i].x = 500 - rects[i].w;
+                    }
                     dest.x += 125;
                     break;
                 default:
                     break;
                 }
+                bool origin = false;
+                for (size_t i = 0; i < rects.size(); i++)
+                {
+                    if (rects[i].x == 0 && rects[i].y == 0){
+                        origin = true;
+                    }
+                }
+                if (!origin){
+
+                }
             }
         }
  
-        // right boundary
-        if (dest.x + dest.w > 500)
-            dest.x = 500 - dest.w;
- 
-        // left boundary
-        if (dest.x < 0)
-            dest.x = 0;
- 
-        // bottom boundary
-        if (dest.y + dest.h > 500)
-            dest.y = 500 - dest.h;
- 
-        // upper boundary
-        if (dest.y < 0)
-            dest.y = 0;
- 
         // clears the screen
         SDL_RenderClear(rend);
-        SDL_RenderCopy(rend, tex, NULL, &dest);
+        for (size_t i = 0; i < rects.size(); i++)
+        {
+            SDL_RenderCopy(rend, t.getTexture(), NULL, &rects[i]);
+        }
  
         // triggers the double buffers
         // for multiple rendering
@@ -119,7 +192,7 @@ int main(int argc, char *argv[])
     }
  
     // destroy texture
-    SDL_DestroyTexture(tex);
+    SDL_DestroyTexture(t.getTexture());
  
     // destroy renderer
     SDL_DestroyRenderer(rend);
