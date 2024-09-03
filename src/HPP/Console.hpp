@@ -1,6 +1,9 @@
+#ifndef CONSOLE_H
+#define CONSOLE_H
+
 #include <iostream>
 #include <conio.h>
-#include "Matrix.cpp"
+#include "Matrix.hpp"
 
 class Console
 {
@@ -40,7 +43,7 @@ public:
                         lose = !matrix.addNumber();
                         change = true;
                         break;
-                    case 75: 
+                    case 75: //left
                         matrix.moveMatrix('l');
                         lose = !matrix.addNumber();
                         change = true;
@@ -58,3 +61,5 @@ public:
         }
     };
 };
+
+#endif

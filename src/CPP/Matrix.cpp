@@ -1,18 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <map>
-
-class Matrix
-{
-private:
-    int matrix[4][4];
-public:
-    Matrix();
-    ~Matrix();
-    int getElement(int i, int j);
-    void moveMatrix(char d);
-    bool addNumber();
-};
+#include "Matrix.hpp"
 
 Matrix::Matrix()
 {
