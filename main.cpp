@@ -4,19 +4,20 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 static std::vector<SDL_Surface*> const surfaces {
-    IMG_Load("2 Tile.png"),
-    IMG_Load("4 Tile.png"),
-    IMG_Load("8 Tile.png"),
-    IMG_Load("16 Tile.png"),
-    IMG_Load("32 Tile.png"),
-    IMG_Load("64 Tile.png"),
-    IMG_Load("128 Tile.png"),
-    IMG_Load("256 Tile.png"),
-    IMG_Load("512 Tile.png"),
-    IMG_Load("1024 Tile.png"),
-    IMG_Load("2048 Tile.png"),
+    IMG_Load("images/2 Tile.png"),
+    IMG_Load("images/4 Tile.png"),
+    IMG_Load("images/8 Tile.png"),
+    IMG_Load("images/16 Tile.png"),
+    IMG_Load("images/32 Tile.png"),
+    IMG_Load("images/64 Tile.png"),
+    IMG_Load("images/128 Tile.png"),
+    IMG_Load("images/256 Tile.png"),
+    IMG_Load("images/512 Tile.png"),
+    IMG_Load("images/1024 Tile.png"),
+    IMG_Load("images/2048 Tile.png"),
 };
 
 static SDL_Surface* getSurface(int num){
@@ -57,8 +58,244 @@ SDL_Texture* Tile::getTexture(){
     return tex;
 }
 
+void moveMatrix(char d[], int n, int a[4][4])
+{
  
-int main(int argc, char *argv[])
+    // For right shift move.
+    if (d[0] == 'r') {
+ 
+        // for each row from
+        // top to bottom
+        for (int i = 0; i < n; i++) {
+            std::vector<int> v, w;
+            int j;
+ 
+            // for each element of
+            // row from right to left
+            for (j = n - 1; j >= 0; j--) {
+                // if not 0
+                if (a[i][j])
+                    v.push_back(a[i][j]);
+            }
+ 
+            // for each temporary array
+            for (j = 0; j < v.size(); j++) {
+                // if two element have same
+                // value at consecutive position.
+                if (j < v.size() - 1 && v[j] == v[j + 1]) {
+                    // insert only one element
+                    // as sum of two same element.
+                    w.push_back(2 * v[j]);
+                    j++;
+                }
+                else
+                    w.push_back(v[j]);
+            }
+ 
+            // filling the each row element to 0.
+            for (j = 0; j < n; j++)
+                a[i][j] = 0;
+ 
+            j = n - 1;
+ 
+            // Copying the temporary
+            // array to the current row.
+            for (auto it = w.begin();
+                 it != w.end(); it++)
+                a[i][j--] = *it;
+        }
+    }
+ 
+    // for left shift move
+    else if (d[0] == 'l') {
+ 
+        // for each row
+        for (int i = 0; i < n; i++) {
+            std::vector<int> v, w;
+            int j;
+ 
+            // for each element of the
+            // row from left to right
+            for (j = 0; j < n; j++) {
+                // if not 0
+                if (a[i][j])
+                    v.push_back(a[i][j]);
+            }
+ 
+            // for each temporary array
+            for (j = 0; j < v.size(); j++) {
+                // if two element have same
+                // value at consecutive position.
+                if (j < v.size() - 1 && v[j] == v[j + 1]) {
+                    // insert only one element
+                    // as sum of two same element.
+                    w.push_back(2 * v[j]);
+                    j++;
+                }
+                else
+                    w.push_back(v[j]);
+            }
+ 
+            // filling the each row element to 0.
+            for (j = 0; j < n; j++)
+                a[i][j] = 0;
+ 
+            j = 0;
+ 
+            for (auto it = w.begin();
+                 it != w.end(); it++)
+                a[i][j++] = *it;
+        }
+    }
+ 
+    // for down shift move.
+    else if (d[0] == 'd') {
+        // for each column
+        for (int i = 0; i < n; i++) {
+            std::vector<int> v, w;
+            int j;
+ 
+            // for each element of
+            // column from bottom to top
+            for (j = n - 1; j >= 0; j--) {
+                // if not 0
+                if (a[j][i])
+                    v.push_back(a[j][i]);
+            }
+ 
+            // for each temporary array
+            for (j = 0; j < v.size(); j++) {
+ 
+                // if two element have same
+                // value at consecutive position.
+                if (j < v.size() - 1 && v[j] == v[j + 1]) {
+                    // insert only one element
+                    // as sum of two same element.
+                    w.push_back(2 * v[j]);
+                    j++;
+                }
+                else
+                    w.push_back(v[j]);
+            }
+ 
+            // filling the each column element to 0.
+            for (j = 0; j < n; j++)
+                a[j][i] = 0;
+ 
+            j = n - 1;
+ 
+            // Copying the temporary array
+            // to the current column
+            for (auto it = w.begin();
+                 it != w.end(); it++)
+                a[j--][i] = *it;
+        }
+    }
+ 
+    // for up shift move
+    else if (d[0] == 'u') {
+        // for each column
+        for (int i = 0; i < n; i++) {
+            std::vector<int> v, w;
+            int j;
+ 
+            // for each element of column
+            // from top to bottom
+            for (j = 0; j < n; j++) {
+                // if not 0
+                if (a[j][i])
+                    v.push_back(a[j][i]);
+            }
+ 
+            // for each temporary array
+            for (j = 0; j < v.size(); j++) {
+                // if two element have same
+                // value at consecutive position.
+                if (j < v.size() - 1 && v[j] == v[j + 1]) {
+                    // insert only one element
+                    // as sum of two same element.
+                    w.push_back(2 * v[j]);
+                    j++;
+                }
+                else
+                    w.push_back(v[j]);
+            }
+ 
+            // filling the each column element to 0.
+            for (j = 0; j < n; j++)
+                a[j][i] = 0;
+ 
+            j = 0;
+ 
+            // Copying the temporary array
+            // to the current column
+            for (auto it = w.begin();
+                 it != w.end(); it++)
+                a[j++][i] = *it;
+        }
+    }
+}
+
+bool addNumber(int matrix[4][4]){
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++){
+            if (matrix[i][j] == 0){
+                matrix[i][j] = rand()%10<8 ? 2 : 4;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Console(){
+    int matrix[4][4];
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++){
+            matrix[i][j] = 0;
+        }
+    }
+
+    matrix[0][0] = 2;
+
+    bool running = true;
+
+    while(running){
+        std::cout << "2048 :\n" << std::endl;
+        std::cout << matrix[0][0] << " " << matrix[0][1] << " " << matrix[0][2] << " " << matrix[0][3] << std::endl;
+        std::cout << matrix[1][0] << " " << matrix[1][1] << " " << matrix[1][2] << " " << matrix[1][3] << std::endl;
+        std::cout << matrix[2][0] << " " << matrix[2][1] << " " << matrix[2][2] << " " << matrix[2][3] << std::endl;
+        std::cout << matrix[3][0] << " " << matrix[3][1] << " " << matrix[3][2] << " " << matrix[3][3] << std::endl << std::endl;
+
+        std::string s = "";
+        while (s != "N" && s != "E" & s != "S" & s != "W" & s != "Q"){
+            std::cout << "Choose a direction (N, E, S, W) (Q = Quit) : " << std::endl;
+            std::cin >> s;
+        }
+        if (s == "N"){
+            moveMatrix("u", 4, matrix);
+            addNumber(matrix);
+        }
+        else if (s == "E"){
+            moveMatrix("r", 4, matrix);
+            addNumber(matrix);
+        }
+        else if (s == "S"){
+            moveMatrix("d", 4, matrix);
+            addNumber(matrix);
+        }
+        else if (s == "W"){
+            moveMatrix("l", 4, matrix);
+            addNumber(matrix);
+        }
+        else if (s == "Q"){
+            running = false;
+        }
+    }
+}
+
+void SDL()
 {
     SDL_Window* win = SDL_CreateWindow("2048", // creates a window
                                        SDL_WINDOWPOS_CENTERED,
@@ -202,6 +439,12 @@ int main(int argc, char *argv[])
      
     // close SDL
     SDL_Quit();
- 
+}
+
+int main(int argc, char *argv[])
+{
+    Console();
+    // SDL();
+
     return 0;
 }
