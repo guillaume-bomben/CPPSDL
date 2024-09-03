@@ -11,6 +11,16 @@ Matrix::Matrix()
     matrix[0][0] = 2;
 }
 
+int Matrix::getScore() {
+    int score = 0;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            score += matrix[i][j];
+        }
+    }
+    return score;
+}
+
 Matrix::~Matrix()
 {
 }

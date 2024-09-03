@@ -15,6 +15,7 @@ public:
     int getElement(int i, int j);
     void moveMatrix(char d);
     bool addNumber();
+    int getScore();
 };
 
 #endif

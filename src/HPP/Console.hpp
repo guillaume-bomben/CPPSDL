@@ -18,6 +18,7 @@ public:
         while(running){
             if (change){
                 std::cout << "2048 :\n" << std::endl;
+                std::cout << "Score: " << matrix.getScore() << std::endl << std::endl;
                 std::cout << matrix.getElement(0, 0) << " " << matrix.getElement(0, 1) << " " << matrix.getElement(0, 2) << " " << matrix.getElement(0, 3) << std::endl;
                 std::cout << matrix.getElement(1, 0) << " " << matrix.getElement(1, 1) << " " << matrix.getElement(1, 2) << " " << matrix.getElement(1, 3) << std::endl;
                 std::cout << matrix.getElement(2, 0) << " " << matrix.getElement(2, 1) << " " << matrix.getElement(2, 2) << " " << matrix.getElement(2, 3) << std::endl;
