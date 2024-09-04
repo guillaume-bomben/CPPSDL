@@ -105,28 +105,33 @@ public:
             }
             if (e.type == SDL_KEYDOWN) {
                 // Jouer le son à chaque appui de touche
-                Mix_PlayChannel(-1, SFX, -1);
 
                 switch (e.key.keysym.scancode) {
                     case SDL_SCANCODE_Z:
                     case SDL_SCANCODE_UP:
                         matrix.moveMatrix('u');
                         lose = !matrix.addNumber();
+                        Mix_PlayChannel(-1, SFX, 0);
+
                         break;
                     case SDL_SCANCODE_Q:
                     case SDL_SCANCODE_LEFT:
                         matrix.moveMatrix('l');
                         lose = !matrix.addNumber();
+                        Mix_PlayChannel(-1, SFX, 0);
+
                         break;
                     case SDL_SCANCODE_S:
                     case SDL_SCANCODE_DOWN:
                         matrix.moveMatrix('d');
                         lose = !matrix.addNumber();
+                        Mix_PlayChannel(-1, SFX, 0);
                         break;
                     case SDL_SCANCODE_D:
                     case SDL_SCANCODE_RIGHT:
                         matrix.moveMatrix('r');
                         lose = !matrix.addNumber();
+                        Mix_PlayChannel(-1, SFX, 0);
                         break;
                 }
             }
