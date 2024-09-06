@@ -1,5 +1,9 @@
 all:
-	g++ -I src/HPP -I src/include -L src/lib -o main main.cpp src/CPP/* -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+	cmake -G "MinGW Makefiles" -B build
+	cmake --build build
+
+clean:
+	rm -rf build
 
 run:
-	./main
+	./build/bin/main
