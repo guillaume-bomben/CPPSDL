@@ -1,5 +1,6 @@
-#include "Window.hpp"
+#include "HPP/Window.hpp"
 
 int main(){
-    Window::run();
+    Window window{800, 600};
+    window.run();
 }
