@@ -9,4 +9,8 @@ class Window{
         Window(unsigned int width, unsigned int height) : width{width}, height{height} {}
         ~Window();
         void run();
+        unsigned int getWidth();
+        unsigned int getHeight();
+        void setWidth(unsigned int width);
+        void setHeight(unsigned int height);
 };

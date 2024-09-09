@@ -19,3 +19,19 @@ void Window::run(){
         window.display();
     }
 }
+
+unsigned int Window::getWidth(){
+    return this->width;
+}
+
+unsigned int Window::getHeight(){
+    return this->height;
+}
+
+void Window::setWidth(unsigned int width){
+    this->width = width;
+}
+
+void Window::setHeight(unsigned int height){
+    this->height = height;
+}
