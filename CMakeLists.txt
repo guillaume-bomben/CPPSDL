@@ -16,6 +16,8 @@ FetchContent_MakeAvailable(SFML)
 add_executable(main 
             src/main.cpp
             src/CPP/Window.cpp
+            src/CPP/Tile.cpp
+            src/CPP/GameObject.cpp
 )
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
