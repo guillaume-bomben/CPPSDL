@@ -5,10 +5,13 @@ Window::~Window(){
 }
 
 void Window::run(){
+    this->backTexture.loadFromFile("images/background.png");
+    this->backSprite.setTexture(this->backTexture);
     auto window = sf::RenderWindow{ { this->width, this->height }, "2048" };
     window.setFramerateLimit(60);
 
     while (window.isOpen()){
+        
         for (auto event = sf::Event{}; window.pollEvent(event);){
             if (event.type == sf::Event::Closed){
                 window.close();
@@ -16,6 +19,7 @@ void Window::run(){
         }
 
         window.clear();
+        window.draw(this->backSprite);
         window.display();
     }
 }
