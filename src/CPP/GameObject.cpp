@@ -1,15 +1,15 @@
 #include "../HPP/GameObject.hpp"
+#include <iostream>
+
+GameObject::GameObject(){}
 
 GameObject::GameObject(int x, int y, int width, int height, const std::string& texturePath) : x{x}, y{y}, width{width}, height{height}{
-    this->texture.loadFromFile(texturePath);
-    this->sprite.setTexture(this->texture);
+    this->TextureImage.loadFromFile(texturePath);
+    this->sprite.setTexture(this->TextureImage);
     this->sprite.setPosition(this->x, this->y);
-    
 }
 
-GameObject::~GameObject(){
-    this->texture.~Texture();
-}
+GameObject::~GameObject(){}
 
 int GameObject::getX(){
     return this->x;
@@ -27,13 +27,13 @@ void GameObject::setY(int y){
     this->y = y;
 }
 
-void GameObject::setTexture(const std::string& texturePath){
-    this->texture.loadFromFile(texturePath);
-    GameObject::setSprite();
+void GameObject::setTextureImage(const std::string& texturePath){
+    this->TextureImage.loadFromFile(texturePath);
+    this->setSprite();
 }
 
 void GameObject::setSprite(){
-    this->sprite.setTexture(this->texture);
+    this->sprite.setTexture(this->TextureImage);
     this->sprite.setPosition(this->x, this->y);
 }
 
