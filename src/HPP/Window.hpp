@@ -1,3 +1,6 @@
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
+
 #include <SFML/Graphics.hpp>
 
 class Window{ 
@@ -16,3 +19,5 @@ class Window{
         void setWidth(unsigned int width);
         void setHeight(unsigned int height);
 };
+
+#endif
