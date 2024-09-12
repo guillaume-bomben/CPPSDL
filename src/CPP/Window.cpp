@@ -27,25 +27,21 @@ void Window::run(){
                 if (event.key.code == sf::Keyboard::Up){
                     game.matrix.moveMatrix('u');
                     loose = !game.matrix.addNumber();
-                    game.matrix.addNumber();
                     game.update();
                 }
                 else if (event.key.code == sf::Keyboard::Down){
                     game.matrix.moveMatrix('d');
                     loose = !game.matrix.addNumber();
-                    game.matrix.addNumber();
                     game.update();
                 }
                 else if (event.key.code == sf::Keyboard::Left){
                     game.matrix.moveMatrix('l');
                     loose = !game.matrix.addNumber();
-                    game.matrix.addNumber();
                     game.update();
                 }
                 else if (event.key.code == sf::Keyboard::Right){
                     game.matrix.moveMatrix('r');
                     loose = !game.matrix.addNumber();
-                    game.matrix.addNumber();
                     game.update();
                 }
             }
