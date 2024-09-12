@@ -13,6 +13,7 @@ class Game : public Matrix{
         Game();
         ~Game();
         void update();
+        void createTile();
 
 };
 
