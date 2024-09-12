@@ -7,3 +7,6 @@ clean:
 
 run:
 	./build/bin/main
+
+run_test:
+	./build/bin/tests
