@@ -5,18 +5,13 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
-#include "Game.hpp"
-#include "Window.hpp"
+#include "Console.hpp"
+#include "SDLWindow.hpp"
 
-int main(int argc, char* argv[]) {
-    Window window("2048 Game", 600, 600);
-    Game game(window);
-
-    while (game.isRunning()) {
-        game.handleEvents();
-        game.update();
-        game.render();
-    }
+int main(int argc, char *argv[])
+{
+    // Console::run();
+    SDLWindow::run();
 
     return 0;
 }
