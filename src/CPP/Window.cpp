@@ -12,6 +12,18 @@ void Window::run(){
     bool loose = false;
     this->backTexture.loadFromFile("images/background.png");
     this->backSprite.setTexture(this->backTexture);
+
+    sf::Font font;
+    if (!font.loadFromFile("Font/Arial.ttf")){
+        std::cout << "Error loading font" << std::endl;
+    }
+    sf::Text text;
+    text.setFont(font);
+    text.setString("You loose, Press R to restart");
+    text.setCharacterSize(30);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(200, 200);
+
     auto window = sf::RenderWindow{ { this->width, this->height }, "2048" };
     window.setFramerateLimit(60);
     Game game = Game();
@@ -44,21 +56,31 @@ void Window::run(){
                     loose = !game.matrix.addNumber();
                     game.update();
                 }
+                else if (event.key.code == sf::Keyboard::R){
+                    game = Game();
+                    loose = false;
+                }
             }
         }
 
-        if (loose){
-            window.close();
-        }
-
         window.clear();
-        window.draw(this->backSprite);
 
-        for (size_t i = 0; i < game.tiles.size(); ++i) {
-            tile = game.tiles[i];
-            tile.setTextureImage(game.tiles[i].getTexturePath());
-            window.draw(tile.getSprite());
+        if (loose){
+            //window.close();
+            window.draw(text);
         }
+        else{
+            window.draw(this->backSprite);
+
+            for (size_t i = 0; i < game.tiles.size(); ++i) {
+                tile = game.tiles[i];
+                tile.setTextureImage(game.tiles[i].getTexturePath());
+                window.draw(tile.getSprite());
+            }
+        }
+
+        
+        
 
         window.display();
     }
